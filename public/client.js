@@ -1,8 +1,12 @@
+'use strict';
+
 const socket = io();
 
 let $connectionCount = document.getElementById('connection-count');
 let $statusMessage   = document.getElementById('status-message');
 let $buttons         = document.querySelectorAll('#choices button');
+let $votes           = document.getElementById('votes');
+let $yourVote        = document.getElementById('your-vote');
 
 for (let i = 0; i < $buttons.length; i++) {
   $buttons[i].addEventListener('click', (event) => {
@@ -19,5 +23,13 @@ socket.on('statusMessage', (message) => {
 });
 
 socket.on('voteCount', (votes) => {
-  console.log(votes);
+  $votes.innerText = "A: " + votes.A +  "  --  " +
+                     "B: " + votes.B +  "  --  " +
+                     "C: " + votes.C +  "  --  " +
+                     "D: " + votes.D
+
+})
+
+socket.on('voted', (vote) => {
+  $yourVote.innerText = `Your Vote: ${vote}`;
 });

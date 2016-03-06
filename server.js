@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const http    = require('http');
 const express = require('express');
@@ -38,7 +38,8 @@ io.on('connection', (socket) => {
   socket.on('message', (channel, message) => {
     if (channel === 'voteCast') {
       votes[socket.id] = message;
-      socket.emit('voteCount', countVotes(votes));
+      io.sockets.emit('voteCount', countVotes(votes));
+      socket.emit('voted', message);
     }
   });
 
@@ -57,8 +58,6 @@ function countVotes(votes) {
   }
   return voteCount;
 }
-
-
 
 module.exports = server;
 
